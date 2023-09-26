@@ -13,10 +13,15 @@ const App = () => {
 
   const giveName = (event) => {
   event.preventDefault()
-   const newPerson = { name: newName }
-   setPersons ([...persons, newPerson])
-   console.log(newName)
-  }
+  //person.some tarkistaa, että matchaakö jokin ja jos joo niin se palauttaa true arvon ja console.logaa nocando
+    if(persons.some((person) => person.name === newName)) {
+      console.log("noCAndo")
+    } else {
+      const newPerson = { name: newName }
+      setPersons ([...persons, newPerson])
+      console.log(newName)
+    }
+    }
   return (
     <div>
       <h2>Phonebook</h2>
@@ -43,4 +48,4 @@ const App = () => {
 
 }
 
-export default App
+export default App;
