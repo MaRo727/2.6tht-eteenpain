@@ -15,7 +15,7 @@ const App = () => {
   event.preventDefault()
   //person.some tarkistaa, että matchaakö jokin ja jos joo niin se palauttaa true arvon ja console.logaa nocando
     if(persons.some((person) => person.name === newName)) {
-      console.log("noCAndo")
+      alert("noCAndo")
     } else {
       const newPerson = { name: newName }
       setPersons ([...persons, newPerson])
