@@ -6,15 +6,31 @@ const App = () => {
     { 
       name: 'Arto Hellas',
       number: "040 40404044"
+    },
+    {
+      name: 'Ada Lovelace', 
+      number: '39-44-5323523' 
+    },
+    { 
+      name: 'Dan Abramov', 
+      number: '12-43-234345' 
+    },
+    { 
+      name: 'Mary Poppendieck', 
+      number: '39-23-6423122' 
     }
   ]) 
-  const [newName, setNewName] = useState('')
+  const [newName, setNewName] = useState("")
   const [newNumber, setNewNumber] = useState("")
+  const [newSearch, setNewSearch] = useState("")
   const handleInputChange = (event) => {
     setNewName(event.target.value)
   }
   const handleNumberInputChange = (event) => {
     setNewNumber(event.target.value)
+  }
+  const handleSearchInputChange = (event) => {
+    setNewSearch(event.target.value)
   }
 
   const giveName = (event) => {
@@ -32,6 +48,10 @@ const App = () => {
       console.log(persons)
     }
     }
+    //filter hyvä ominaisuus muistaa! (oma muistiinpano)
+    const filterPersons = persons.filter((person) =>
+    person.name.toLowerCase().includes(newSearch.toLowerCase())
+  );
   return (
     <div>
       <h2>Phonebook</h2>
@@ -48,6 +68,7 @@ const App = () => {
           type="text"
           value={newNumber}
           onChange={handleNumberInputChange}/>
+          <Search onSearchChange={handleSearchInputChange}/>
         </div>
         <div>
           <button type="submit" onClick={giveName}>add</button>
@@ -55,7 +76,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>
-        {persons.map((person, index) => (
+        {filterPersons.map((person, index) => (
           <li key={index}>{person.name} - {person.number}</li>
         ))}
       </ul>
@@ -63,5 +84,17 @@ const App = () => {
   )
 
 }
+const Search = (props) => {
 
+
+
+
+  return (
+    <input 
+    placeholder='Filter'
+    type="text"
+    onChange={props.onSearchChange}
+   />
+  )
+}
 export default App;
