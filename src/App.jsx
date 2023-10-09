@@ -57,18 +57,12 @@ const App = () => {
       <h2>Phonebook</h2>
       <form>
         <div>
-          <input 
-          placeholder='name'
-          type="text"
-          value={newName}
-          onChange={handleInputChange}/>
-
-          <input 
-          placeholder='number'
-          type="text"
-          value={newNumber}
-          onChange={handleNumberInputChange}/>
-          <Search onSearchChange={handleSearchInputChange}/>
+        <NameNumber
+            newName={newName}
+            newNumber={newNumber}
+            handleInputChange={handleInputChange}
+            handleNumberInputChange={handleNumberInputChange}
+          />
         </div>
         <div>
           <button type="submit" onClick={giveName}>add</button>
@@ -76,25 +70,53 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>
-        {filterPersons.map((person, index) => (
-          <li key={index}>{person.name} - {person.number}</li>
-        ))}
+        <Filter filterPersons={filterPersons}
+        onSearchChange={handleSearchInputChange}/>
+        <NameList filterPersons={filterPersons}/>
       </ul>
     </div>
   )
-
+  
 }
-const Search = (props) => {
-
-
-
-
+const NameList = (props) => {
   return (
-    <input 
+    <div>
+      {props.filterPersons.map((person, index) => (
+        <li key={index}>{person.name} - {person.number}</li>
+      ))}
+    </div>
+  )
+}
+
+const Filter = (props) => {
+  return(
+    <div>
+      <input 
     placeholder='Filter'
     type="text"
     onChange={props.onSearchChange}
-   />
+    />
+
+      
+    </div>
+  )
+}
+
+const NameNumber = (props) => {
+  return (
+    <div>
+       <input 
+          placeholder='name'
+          type="text"
+          value={props.newName}
+          onChange={props.handleInputChange}/>
+
+          <input 
+          placeholder='number'
+          type="text"
+          value={props.newNumber}
+          onChange={props.handleNumberInputChange}/>
+    </div>
   )
 }
 export default App;
