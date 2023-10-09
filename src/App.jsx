@@ -57,7 +57,12 @@ const App = () => {
       const newPerson = { name: newName }
       const newPhone = { number: newNumber }
       const bigObject = {...newPerson, ...newPhone}
-      setPersons ([...persons, bigObject])
+      // setPersons ([...persons, bigObject])
+      axios
+      .post('http://localhost:3001/persons', bigObject)
+      .then(response => {
+        console.log(response)
+      })
       console.log(newName)
       console.log(newNumber)
       console.log(persons)
