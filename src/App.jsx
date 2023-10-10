@@ -55,6 +55,15 @@ const App = () => {
     const filterPersons = persons.filter((person) =>
     person.name.toLowerCase().includes(newSearch.toLowerCase()));
     
+    const removePerson = (id) => {
+      if(window.confirm("Are you sure?")){
+        noteService
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id));
+        })
+      }
+    }
   return (
     <div>
       <h2>Phonebook</h2>
@@ -75,7 +84,7 @@ const App = () => {
       <ul>
         <Filter filterPersons={filterPersons}
         onSearchChange={handleSearchInputChange}/>
-        <NameList filterPersons={filterPersons}/>
+        <NameList filterPersons={filterPersons} removePerson={removePerson}/>
       </ul>
     </div>
   )
@@ -85,7 +94,8 @@ const NameList = (props) => {
   return (
     <div>
       {props.filterPersons.map((person, index) => (
-        <li key={index}>{person.name} - {person.number}</li>
+        <li key={index}>{person.name} - {person.number}
+         <button onClick={() => props.removePerson(person.id)}>Delete</button></li>
       ))}
     </div>
   )
