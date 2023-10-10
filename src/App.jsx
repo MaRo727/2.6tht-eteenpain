@@ -1,43 +1,25 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import noteService from './services/notes'
 // import { useState } from 'react'
 
+
 const App = () => {
-  // const [persons, setPersons] = useState([
-  //   { 
-  //     name: 'Arto Hellas',
-  //     number: "040 40404044"
-  //   },
-  //   {
-  //     name: 'Ada Lovelace', 
-  //     number: '39-44-5323523' 
-  //   },
-  //   { 
-  //     name: 'Dan Abramov', 
-  //     number: '12-43-234345' 
-  //   },
-  //   { 
-  //     name: 'Mary Poppendieck', 
-  //     number: '39-23-6423122' 
-  //   }
-  // ]) 
   const [notes, setNotes] = useState([])
   const [persons, setPersons] = useState([])
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
+    noteService
+      .getAll()
       .then(response => {
-        console.log('promise fulfilled')
         setPersons(response.data)
+        console.log(response.data)
       })
   }, [])
-  console.log('render', persons.length, 'notes')
 
   const [newName, setNewName] = useState("")
   const [newNumber, setNewNumber] = useState("")
   const [newSearch, setNewSearch] = useState("")
+  
   const handleInputChange = (event) => {
     setNewName(event.target.value)
   }
@@ -49,29 +31,30 @@ const App = () => {
   }
 
   const giveName = (event) => {
-  event.preventDefault()
-  //person.some tarkistaa, että matchaakö jokin ja jos joo niin se palauttaa true arvon ja console.logaa nocando
+    event.preventDefault()
+      //person.some tarkistaa, että matchaakö jokin ja jos joo niin se palauttaa true arvon ja console.logaa nocando
     if(persons.some((person) => person.name === newName)) {
       alert("no can do")
     } else {
       const newPerson = { name: newName }
       const newPhone = { number: newNumber }
       const bigObject = {...newPerson, ...newPhone}
-      // setPersons ([...persons, bigObject])
-      axios
-      .post('http://localhost:3001/persons', bigObject)
-      .then(response => {
-        console.log(response)
-      })
+
+      noteService
+      .create(bigObject)
+        .then(response => {
+          setNotes(notes.concat(response.data))
+        })
+
       console.log(newName)
       console.log(newNumber)
       console.log(persons)
     }
-    }
+  }
     //filter hyvä ominaisuus muistaa! (oma muistiinpano)
     const filterPersons = persons.filter((person) =>
-    person.name.toLowerCase().includes(newSearch.toLowerCase())
-  );
+    person.name.toLowerCase().includes(newSearch.toLowerCase()));
+    
   return (
     <div>
       <h2>Phonebook</h2>
@@ -139,4 +122,4 @@ const NameNumber = (props) => {
     </div>
   )
 }
-export default App;
+export default App
